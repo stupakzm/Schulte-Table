@@ -4,30 +4,38 @@ using TMPro;
 
 public class GameController : MonoBehaviour {
 
-    private int startPositionX = 300;
-    private int startPositionY = 250;
-    private int offset = 150;
-    private List<int> numbers;
-    private Queue<int> numbersToFind;
-    private static float bestTime = float.MaxValue;
-    private const string BEST_TIME = "BestTime";
-    private float currentTime;
-    private bool won;
-    private bool started;
-    private List<GridNumber> gridNumberObjects = new List<GridNumber>();
-
     [SerializeField] private GameObject gridNumber;
     [SerializeField] private GameObject StartButton;
+    [SerializeField] private GameObject ModesButton;
     [SerializeField] private TextMeshProUGUI[] numbersToFindText;
     [SerializeField] private Transform numbersGridParent;
     [SerializeField] private GameObject statisticsView;
     [SerializeField] private TextMeshProUGUI statisticsViewText;
 
+    private int startPositionX = 300;
+    private int startPositionY = 250;
+    private int offset = 150;
+    private int missClick;
+    private List<int> numbers;
+    private Queue<int> numbersToFind;
+    private static float bestTime = float.MaxValue;
+    private const string BEST_TIME = "BestTime";
+    private const string LIGHT_SETTING = "DarkMode";
+    private const string LIGHT_MODE = "LightMode";
+    private const string DARK_MODE = "DarkMode";
+    private float currentTime;
+    private bool won;
+    private bool started;
+    private string lightSettings;
+    private List<GridNumber> gridNumberObjects = new List<GridNumber>();
+    private Mode mode;
+
     private void Start() {
         InstantiateGridNumbers();
         statisticsView.SetActive(false);
-        if (PlayerPrefs.GetFloat(BEST_TIME) > 0)
-            bestTime = PlayerPrefs.GetFloat(BEST_TIME);
+        //  if (PlayerPrefs.GetFloat(BEST_TIME) > 0)
+        bestTime = PlayerPrefs.GetFloat(BEST_TIME, float.MaxValue);
+        lightSettings = PlayerPrefs.GetString(LIGHT_SETTING, LIGHT_MODE);
         float screenHeight = Screen.height;
         float newScale = screenHeight / 1080;
         numbersGridParent.localScale = new Vector3(newScale, newScale, 1);
@@ -67,7 +75,7 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    public void CompareNumberPressed(int pressedNumer) {
+    public bool CompareNumberPressed(int pressedNumer) {
         if (numbersToFind.Peek() == pressedNumer) {
             numbersToFind.Dequeue();
             if (numbersToFind.TryPeek(out int result))
@@ -75,11 +83,18 @@ public class GameController : MonoBehaviour {
             else {
                 won = true;
                 statisticsView.SetActive(true);
+                ModesButton.SetActive(true);
                 bestTime = currentTime < bestTime ? currentTime : bestTime;
                 PlayerPrefs.SetFloat(BEST_TIME, bestTime);
-                statisticsViewText.text = "You won in " + currentTime.ToString("#.0") + " seconds.\nYour best time in this mode is " + bestTime.ToString("#.0") + ".";
+                statisticsViewText.text = "You won in " + currentTime.ToString("#.0") + " seconds." +
+                    "\nIncorrect touches - " + missClick + "\nYour best time in this mode is " + bestTime.ToString("#.0") + " seconds.";
             }
+            return true;
         }
+        else {
+            missClick++;
+        }
+        return false;
     }
 
     public void ShowNumberToFind() {
@@ -93,13 +108,20 @@ public class GameController : MonoBehaviour {
         statisticsView.SetActive(false);
         StartButton.SetActive(true);
         currentTime = 0;
+        missClick = 0;
         won = false;
         AsignNumberList();
         numbersToFind = new Queue<int>();
         for (int i = 0; i < 25; i++) {
             int index = Random.Range(0, numbers.Count - 1);
             gridNumberObjects[i].SetNumber(numbers[index]);
-            gridNumberObjects[i].SetGameController(this);
+            gridNumberObjects[i].SetMode(mode);
+            if (lightSettings == DARK_MODE) {
+                gridNumberObjects[i].SetDark();
+            }
+            else {
+                gridNumberObjects[i].SetLight();
+            }
             numbers.RemoveAt(index);
             numbersToFind.Enqueue(i + 1);
         }
@@ -108,5 +130,10 @@ public class GameController : MonoBehaviour {
 
     public void Started() {
         started = true;
+    }
+
+    public void SetMode(int mode) {
+        this.mode = (Mode)mode;
+        Reset();
     }
 }
