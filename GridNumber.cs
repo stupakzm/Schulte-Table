@@ -11,7 +11,6 @@ public class GridNumber : MonoBehaviour, IPointerDownHandler {
     private int textInt;
     private GameController gameController;
     private Mode mode;
-    private Color textDarkColor = new Color(39,34,60);
     private string textColorLight = "AFB3C0";
     private string textColorDark = "27223C";
     private string buttonColorLight = "FFFFFF";
@@ -34,22 +33,34 @@ public class GridNumber : MonoBehaviour, IPointerDownHandler {
     public void OnPointerDown(PointerEventData eventData) {
          bool pressedCorrectly = gameController.CompareNumberPressed(textInt);
         if (pressedCorrectly) {
-            if (mode == Mode.Disappear) {
+            if (mode == Mode.Disappear | mode == Mode.Reaction | mode == Mode.Memory) {
                 gameObject.SetActive(false);
-            }
-            else if (mode == Mode.Reaction) {
-                gameObject.SetActive(false);
-                //in gameController activate text + in reverse color style of next number
-            }
-            else if (mode == Mode.Memory) {
-                //disable text after 3 seconds
             }
         }
         else {
             if (mode == Mode.Memory) {
-                //enable text for 3 seconds
+                ShowNumberDelay(3);
             }
         }
+    }
+
+    public void HideNumber() {
+        text.gameObject.SetActive(false);
+    }
+
+    public void ShowNumberReaction() {
+        if (PlayerPrefs.GetString(Const.LIGHT_SETTINGS) == Const.DARK_MODE) {
+            SetLight();
+        }
+        else {
+            SetDark();
+        }
+        text.gameObject.SetActive(true);
+    }
+
+    public void ShowNumberDelay(float seconds) {
+        text.gameObject.SetActive(true);
+        Invoke(nameof(HideNumber), seconds);
     }
 
     public void SetMode(Mode mode) {

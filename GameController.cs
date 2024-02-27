@@ -26,6 +26,7 @@ public class GameController : MonoBehaviour {
     private bool started;
     private string lightSettings;
     private List<GridNumber> gridNumberObjects = new List<GridNumber>();
+    private GridNumber[] gridNumbersReaction = new GridNumber[25];
     private Mode mode;
 
     private void Start() {
@@ -68,6 +69,10 @@ public class GameController : MonoBehaviour {
             gridNumberObjects[i].SetNumber(numbers[index]);
             gridNumberObjects[i].SetMode(mode);
             gridNumberObjects[i].gameObject.SetActive(true);
+            if (mode == Mode.Reaction) {
+                gridNumberObjects[i].HideNumber();
+                gridNumbersReaction[numbers[index] - 1] = gridNumberObjects[i];
+            }
             numbers.RemoveAt(index);
         }
     }
@@ -121,10 +126,15 @@ public class GameController : MonoBehaviour {
         else {
             if (numbersToFind.Peek() == pressedNumer) {
                 numbersToFind.Dequeue();
-                if (numbersToFind.TryPeek(out int result))
+                if (numbersToFind.TryPeek(out int result)) {
                     ShowNumberToFind();
+                    if (mode == Mode.Reaction) {
+                        ShowGridNumberToFindReaction();
+                    }
+                }
                 else {
                     WonView();
+                    return true;
                 }
                 if (mode == Mode.DynamicShuffle) {
                     GenerateGrid();
@@ -147,7 +157,12 @@ public class GameController : MonoBehaviour {
             Statistics.SetBestTime(mode, currentTime);
         Statistics.SetAttemptCount(mode);
         statisticsViewText.text = "You won in " + currentTime.ToString("#.0") + " seconds." +
-            "\nIncorrect touches - " + missClick + "\nYour best time in "+mode.ToString()+" mode is " + Statistics.GetBestTime(mode).ToString("#.0") + " seconds.";
+            "\nIncorrect touches - " + missClick + "\nYour best time in " + mode.ToString() + " mode is " + Statistics.GetBestTime(mode).ToString("#.0") + " seconds.";
+    }
+
+    private void ShowGridNumberToFindReaction() {
+        gridNumbersReaction[numbersToFind.Peek()-1].ShowNumberReaction();
+
     }
 
     public void ShowNumberToFind() {
@@ -159,6 +174,12 @@ public class GameController : MonoBehaviour {
     public void ShowNumberToFindReverse() {
         for (int i = numbersToFindText.Length - 1; i >= 0; i--) {
             numbersToFindText[i].text = numbersToFindReverse.Peek().ToString();
+        }
+    }
+
+    private void ShowNumbersDelay(float seconds) {
+        for (int i = 0; i < gridNumberObjects.Count - 1; i++) {
+            gridNumberObjects[i].ShowNumberDelay(seconds);
         }
     }
 
@@ -180,9 +201,17 @@ public class GameController : MonoBehaviour {
 
     public void Started() {
         started = true;
-        if (mode == Mode.Reverse)
+        if (mode == Mode.Reverse) {
             ShowNumberToFindReverse();
-        else ShowNumberToFind();
+        }
+        else if (mode == Mode.Reaction) {
+            ShowNumberToFind();
+            ShowGridNumberToFindReaction();
+        }
+        else if (mode == Mode.Memory) {
+            ShowNumbersDelay(5);
+        }
+        else { ShowNumberToFind(); }
     }
 
     public void SetMode(int mode) {

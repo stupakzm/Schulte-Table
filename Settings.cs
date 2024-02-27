@@ -8,9 +8,6 @@ public class Settings : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI statsText;
     [SerializeField] private GameObject[] selectedLightMode;
 
-
-    private void Start() {
-    }
     public void ShowSelectedLightMode() {
         if (PlayerPrefs.GetString(Const.LIGHT_SETTINGS) == Const.LIGHT_MODE) {
             selectedLightMode[0].SetActive(true);
