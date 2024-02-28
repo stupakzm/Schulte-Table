@@ -8,6 +8,10 @@ public class Settings : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI statsText;
     [SerializeField] private GameObject[] selectedLightMode;
 
+    private void Start() {
+        float screenHeight = Screen.height;
+        statsText.fontSize = screenHeight / 26;
+    }
     public void ShowSelectedLightMode() {
         if (PlayerPrefs.GetString(Const.LIGHT_SETTINGS) == Const.LIGHT_MODE) {
             selectedLightMode[0].SetActive(true);
