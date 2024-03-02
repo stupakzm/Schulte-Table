@@ -35,6 +35,7 @@ public class GameController : MonoBehaviour {
         float screenHeight = Screen.height;
         float newScale = screenHeight / 1080;
         numbersGridParent.localScale = new Vector3(newScale, newScale, 1);
+        ResetInGameButton.SetActive(false);
     }
 
     private void Update() {
@@ -150,6 +151,7 @@ public class GameController : MonoBehaviour {
 
     private void WonView() {
         won = true;
+        //HideNumbersToFindText();
         statisticsView.SetActive(true);
         ModesButton.SetActive(true);
         ResetInGameButton.SetActive(false);
@@ -177,6 +179,18 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    //private void ShowNumbersToFindText() {
+    //    for (int i = 0; i < numbersToFindText.Length; i++) {
+    //        numbersToFindText[i].gameObject.SetActive(true);
+    //    }
+    //}
+
+    //private void HideNumbersToFindText() {
+    //    for (int i = 0; i < numbersToFindText.Length; i++) {
+    //        numbersToFindText[i].gameObject.SetActive(false);
+    //    }
+    //}
+
     private void ShowNumbersDelay(float seconds) {
         for (int i = 0; i < gridNumberObjects.Count - 1; i++) {
             gridNumberObjects[i].ShowNumberDelay(seconds);
@@ -193,6 +207,7 @@ public class GameController : MonoBehaviour {
         won = false;
         AsignNumberListToFind();
         GenerateGrid();
+        //HideNumbersToFindText();
     }
 
     public void UpdateCurrentModeText() {
@@ -201,6 +216,7 @@ public class GameController : MonoBehaviour {
 
     public void Started() {
         started = true;
+        //ShowNumbersToFindText();
         if (mode == Mode.Reverse) {
             ShowNumberToFindReverse();
         }
