@@ -65,6 +65,15 @@ public class GridNumber : MonoBehaviour, IPointerDownHandler {
 
     public void SetMode(Mode mode) {
         this.mode = mode;
+        if (mode != Mode.Reaction) {
+            text.gameObject.SetActive(true);
+        }
+        if (PlayerPrefs.GetString(Const.LIGHT_SETTINGS) == Const.DARK_MODE) {
+            SetDark();
+        }
+        else {
+            SetLight();
+        }
     }
 
     public void SetLight() {

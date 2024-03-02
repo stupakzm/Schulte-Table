@@ -24,6 +24,7 @@ public class GameController : MonoBehaviour {
     private float currentTime;
     private bool won;
     private bool started;
+    private bool cantStart;
     private string lightSettings;
     private List<GridNumber> gridNumberObjects = new List<GridNumber>();
     private GridNumber[] gridNumbersReaction = new GridNumber[25];
@@ -88,6 +89,9 @@ public class GameController : MonoBehaviour {
                 gridNumberObjects[i].SetLight();
             }
         }
+        if (mode == Mode.Reaction) {
+            ShowGridNumberToFindReaction();
+        }
     }
 
     private void AsignNumberList() {
@@ -109,6 +113,9 @@ public class GameController : MonoBehaviour {
     }
 
     public bool CompareNumberPressed(int pressedNumer) {
+        if (cantStart) {
+            return false;
+        }
         if (mode == Mode.Reverse) {
             if (numbersToFindReverse.Peek() == pressedNumer) {
                 numbersToFindReverse.Pop();
@@ -151,7 +158,6 @@ public class GameController : MonoBehaviour {
 
     private void WonView() {
         won = true;
-        //HideNumbersToFindText();
         statisticsView.SetActive(true);
         ModesButton.SetActive(true);
         ResetInGameButton.SetActive(false);
@@ -179,18 +185,6 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    //private void ShowNumbersToFindText() {
-    //    for (int i = 0; i < numbersToFindText.Length; i++) {
-    //        numbersToFindText[i].gameObject.SetActive(true);
-    //    }
-    //}
-
-    //private void HideNumbersToFindText() {
-    //    for (int i = 0; i < numbersToFindText.Length; i++) {
-    //        numbersToFindText[i].gameObject.SetActive(false);
-    //    }
-    //}
-
     private void ShowNumbersDelay(float seconds) {
         for (int i = 0; i < gridNumberObjects.Count - 1; i++) {
             gridNumberObjects[i].ShowNumberDelay(seconds);
@@ -207,7 +201,6 @@ public class GameController : MonoBehaviour {
         won = false;
         AsignNumberListToFind();
         GenerateGrid();
-        //HideNumbersToFindText();
     }
 
     public void UpdateCurrentModeText() {
@@ -225,9 +218,16 @@ public class GameController : MonoBehaviour {
             ShowGridNumberToFindReaction();
         }
         else if (mode == Mode.Memory) {
-            ShowNumbersDelay(5);
+            float startDelayTime = 5f;
+            ShowNumbersDelay(startDelayTime);
+            cantStart = true;
+            Invoke(nameof(CanStart), startDelayTime);
         }
         else { ShowNumberToFind(); }
+    }
+
+    private void CanStart() {
+        cantStart = false;
     }
 
     public void SetMode(int mode) {

@@ -7,7 +7,7 @@ public class TextScaler : MonoBehaviour {
 
     [Range(1f, 100f)] public int screenHieghtDevider;
 
-    private void Start() {
+    private void Awake() {
         float screenHeight = Screen.height;
         gameObject.GetComponent<TextMeshProUGUI>().fontSize = screenHeight/ screenHieghtDevider;
     }
