@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour {
     [SerializeField] private GameObject ModesButton;
     [SerializeField] private GameObject ResetInGameButton;
     [SerializeField] private TextMeshProUGUI[] numbersToFindText;
+    [SerializeField] private GameObject numbersToFindTextParent;
     [SerializeField] private Transform numbersGridParent;
     [SerializeField] private GameObject statisticsView;
     [SerializeField] private TextMeshProUGUI statisticsViewText;
@@ -66,7 +67,7 @@ public class GameController : MonoBehaviour {
 
     private void GenerateGrid() {
         AsignNumberList();
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < gridNumberObjects.Count; i++) {
             int index = Random.Range(0, numbers.Count - 1);
             gridNumberObjects[i].SetNumber(numbers[index]);
             gridNumberObjects[i].SetMode(mode);
@@ -81,7 +82,7 @@ public class GameController : MonoBehaviour {
 
     public void ChangeLightMode() {
         lightSettings = PlayerPrefs.GetString(Const.LIGHT_SETTINGS);
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < gridNumberObjects.Count; i++) {
             if (lightSettings == Const.DARK_MODE) {
                 gridNumberObjects[i].SetDark();
             }
@@ -170,7 +171,6 @@ public class GameController : MonoBehaviour {
 
     private void ShowGridNumberToFindReaction() {
         gridNumbersReaction[numbersToFind.Peek()-1].ShowNumberReaction();
-
     }
 
     public void ShowNumberToFind() {
@@ -186,7 +186,7 @@ public class GameController : MonoBehaviour {
     }
 
     private void ShowNumbersDelay(float seconds) {
-        for (int i = 0; i < gridNumberObjects.Count - 1; i++) {
+        for (int i = 0; i < gridNumberObjects.Count; i++) {
             gridNumberObjects[i].ShowNumberDelay(seconds);
         }
     }
@@ -218,16 +218,19 @@ public class GameController : MonoBehaviour {
             ShowGridNumberToFindReaction();
         }
         else if (mode == Mode.Memory) {
-            float startDelayTime = 5f;
+            float startDelayTime = 3f;
             ShowNumbersDelay(startDelayTime);
             cantStart = true;
+            numbersToFindTextParent.SetActive(false);
             Invoke(nameof(CanStart), startDelayTime);
         }
         else { ShowNumberToFind(); }
     }
 
     private void CanStart() {
+        ShowNumberToFind();
         cantStart = false;
+        numbersToFindTextParent.SetActive(true);
     }
 
     public void SetMode(int mode) {
