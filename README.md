@@ -2,7 +2,7 @@
 
 This repository contains the code for my Schulte Table game.
 
-![Schulte Table Project](file/path)
+![Schulte Table Project](https://github.com/stupakzm/Schulte-Table-Unity/blob/main/Schulte%20Table/Schulte%20Table%20Main.png)
 
 The Schulte Table game is an exciting and challenging game that helps to train attention, concentration and reaction. The main goal of the game is to find and click on the numbers from 1 to 25 (where 25 is the size of the table) in the correct order as quickly as possible.
 
