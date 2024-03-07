@@ -13,18 +13,27 @@ The Schulte Table game is an exciting and challenging game that helps to train a
 **Personalized settings:** Players can choose a mode (out of six possible) and a table color to customize the game to their needs.
 
 #Modes
+
 -Static 
-![Static Mode Example](file/path)
+![Static Mode Example](https://github.com/stupakzm/Schulte-Table-Unity/blob/main/Schulte%20Table/static-mode.gif)
+
 -Disapear 
-![Disapear Mode Example](file/path)
+![Disapear Mode Example](https://github.com/stupakzm/Schulte-Table-Unity/blob/main/Schulte%20Table/disappear-mode.gif)
+
 -Reverse 
-![Reverse Mode Example](file/path)
+![Reverse Mode Example](https://github.com/stupakzm/Schulte-Table-Unity/blob/main/Schulte%20Table/reverse-mode.gif)
+
 -Reaction 
-![Reaction Mode Example](file/path)
+![Reaction Mode Example](https://github.com/stupakzm/Schulte-Table-Unity/blob/main/Schulte%20Table/reaction-mode.gif)
+
 -Dynamic Shuffle 
-![Dynamic Shuffle Mode Example](file/path)
+![Dynamic Shuffle Mode Example](https://github.com/stupakzm/Schulte-Table-Unity/blob/main/Schulte%20Table/dynamic-shuffle-mode.gif)
+
 -Memory 
-![Memory Mode Example](file/path)
+![Memory Mode Example](https://github.com/stupakzm/Schulte-Table-Unity/blob/main/Schulte%20Table/memory-mode.gif)
+
+#Modes View
+![Modes View](https://github.com/stupakzm/Schulte-Table-Unity/blob/main/Schulte%20Table/modes.gif)
 
 #Settings
-![Settings Example](file/path)
+![Settings Example](https://github.com/stupakzm/Schulte-Table-Unity/blob/main/Schulte%20Table/settings.gif)
