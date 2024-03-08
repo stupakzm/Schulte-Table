@@ -39,5 +39,5 @@ Below is how the *modes* work
 * Modes View - you can check what mode you are currently on.
 ![Modes View](https://github.com/stupakzm/Schulte-Table-Unity/blob/main/Schulte%20Table/modes.gif)
 
-* Settings - you can change the lighting style, the position of the number before finding it, and view your statistics.
+* Settings - you can change the lighting style, the position of the number to be found, and view your statistics.
 ![Settings Example](https://github.com/stupakzm/Schulte-Table-Unity/blob/main/Schulte%20Table/settings.gif)
