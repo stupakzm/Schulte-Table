@@ -54,7 +54,7 @@ public class GameController : MonoBehaviour {
             for (int x = startPositionX; x >= -300; x -= offset) {
                 GameObject currentGridNumberObject = Instantiate(gridNumber, numbersGridParent);
                 currentGridNumberObject.transform.localPosition = new Vector3(x, y, 0);
-                int index = Random.Range(0, numbers.Count - 1);
+                int index = Random.Range(0, numbers.Count);
                 var currentGridNumber = currentGridNumberObject.GetComponent<GridNumber>();
                 gridNumberObjects.Add(currentGridNumber);
                 currentGridNumber.SetNumber(numbers[index]);
@@ -68,7 +68,7 @@ public class GameController : MonoBehaviour {
     private void GenerateGrid() {
         AsignNumberList();
         for (int i = 0; i < gridNumberObjects.Count; i++) {
-            int index = Random.Range(0, numbers.Count - 1);
+            int index = Random.Range(0, numbers.Count);
             gridNumberObjects[i].SetNumber(numbers[index]);
             gridNumberObjects[i].SetMode(mode);
             gridNumberObjects[i].gameObject.SetActive(true);
